@@ -48,6 +48,16 @@ button{width:100%;border:2px solid #86efac;border-radius:11px;padding:15px;backg
 button:active{transform:scale(.99)}
 .quote{font-size:20px;line-height:1.5;margin-bottom:12px}
 .footer{color:#9a824f;font-size:10px;text-align:center;margin-top:30px;letter-spacing:.5px}
+.quote-popup{position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px;background:rgba(0,0,0,.78);backdrop-filter:blur(7px)}
+.quote-popup[hidden]{display:none}
+.quote-popup-panel{width:min(520px,100%);position:relative;background:linear-gradient(145deg,#211704,#090703);border:1px solid #f6c84c;border-radius:22px;padding:26px 22px 22px;box-shadow:0 20px 80px rgba(246,200,76,.18)}
+.quote-popup-kicker{color:#f6c84c;font-size:11px;letter-spacing:2px;text-transform:uppercase;margin-bottom:12px}
+.quote-popup-text{font-size:clamp(20px,5vw,27px);line-height:1.45;margin:0 0 14px}
+.quote-popup-note{font-size:13px;color:#c7b68b;line-height:1.6}
+.quote-popup-actions{display:flex;gap:10px;margin-top:18px}
+.quote-popup-actions button{margin-top:0;flex:1}
+.quote-popup-actions .popup-later{background:#191205;color:#f6c84c;border:1px solid #6a4b17;box-shadow:none}
+body.popup-open{overflow:hidden}
 @media(min-width:650px){main{padding:34px 26px 56px}.card{padding:25px}.weeks-card{padding:23px}.intro{padding-top:54px}}
 @media(max-width:390px){main{padding-left:13px;padding-right:13px}.edition{font-size:9px;letter-spacing:.8px}.card{padding:17px}.weeks-card{padding:15px 10px}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
@@ -102,6 +112,14 @@ button:active{transform:scale(.99)}
 <div class="eyebrow">Une parole. Un acte. · Renouvellement toutes les 15 minutes</div><p class="quote" id="quote"></p>
 <div class="label">Ces paroles sont originales, inspirées par la réflexion existentielle et la discipline — pas des citations historiques attribuées à Dostoïevski. Ne te contente pas de les lire : prouve-les par un acte aujourd’hui.</div>
 </section>
+<div class="quote-popup" id="quotePopup" role="dialog" aria-modal="true" aria-labelledby="popupTitle" hidden>
+  <div class="quote-popup-panel">
+    <div class="quote-popup-kicker" id="popupTitle">Memento · Pause de conscience</div>
+    <p class="quote-popup-text" id="popupQuote"></p>
+    <div class="quote-popup-note">Tu scrolles depuis un moment. Prends quelques secondes pour revenir à ce qui compte, puis transforme cette pensée en action.</div>
+    <div class="quote-popup-actions"><button type="button" id="popupClose" class="popup-later">Continuer</button><button type="button" id="popupAct">Choisir une action</button></div>
+  </div>
+</div>
 <div class="footer">MEMENTO · LE TEMPS EST TA RESSOURCE LA PLUS PRÉCIEUSE</div>
 </main>
 <script>
@@ -239,6 +257,15 @@ if(savedHorizon)$("horizon").value=savedHorizon;
 function updateQuote(){const slot=Math.floor(Date.now()/(15*60*1000));$("quote").textContent=messages[((slot%messages.length)+messages.length)%messages.length];}
 updateQuote();
 setInterval(updateQuote,15000);
+let activeScrollMs=0,lastScrollAt=0,popupShownAt=0;
+function closeQuotePopup(){ $("quotePopup").hidden=true;document.body.classList.remove("popup-open"); }
+function showQuotePopup(){ $("popupQuote").textContent=$("quote").textContent; $("quotePopup").hidden=false;document.body.classList.add("popup-open");popupShownAt=activeScrollMs; }
+window.addEventListener("scroll",()=>{lastScrollAt=Date.now();},{passive:true});
+setInterval(()=>{if(Date.now()-lastScrollAt<1800&&!document.hidden&&!(!$("quotePopup").hidden))activeScrollMs+=1000;if(activeScrollMs-popupShownAt>=5*60*1000&&$("quotePopup").hidden){showQuotePopup();}},1000);
+$("popupClose").addEventListener("click",closeQuotePopup);
+$("popupAct").addEventListener("click",()=>{closeQuotePopup();document.querySelector('.card .quote')?.scrollIntoView({behavior:'smooth',block:'center'});});
+$("quotePopup").addEventListener("click",e=>{if(e.target===$("quotePopup"))closeQuotePopup();});
+document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!$("quotePopup").hidden)closeQuotePopup();});
 $("save").addEventListener("click",render);
 if(window.ResizeObserver)new ResizeObserver(()=>drawGrid(performance.now())).observe(canvas);
 else window.addEventListener("resize",()=>drawGrid(performance.now()));
