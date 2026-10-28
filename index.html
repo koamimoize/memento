@@ -27,7 +27,7 @@ h1{font-size:clamp(42px,10vw,76px);line-height:.98;letter-spacing:-3px;margin:14
 .progress-ring{width:100%;height:100%;transform:rotate(-90deg);overflow:visible}
 .progress-ring-track,.progress-ring-value{fill:none;stroke-width:11}
 .progress-ring-track{stroke:#30230e}
-.progress-ring-value{stroke:url(#ringGradient);stroke:#f6c84c;stroke-linecap:round;stroke-dasharray:578.05;stroke-dashoffset:578.05;filter:drop-shadow(0 0 6px rgba(246,200,76,.45));transition:stroke-dashoffset .9s ease}
+.progress-ring-value{stroke:#22c55e;stroke-linecap:round;stroke-dasharray:578.05;stroke-dashoffset:578.05;filter:drop-shadow(0 0 6px rgba(34,197,94,.42));transition:stroke-dashoffset .9s ease,stroke .9s ease,filter .9s ease}
 .progress-ring-center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:24px}
 .progress-ring-center .number{font-size:clamp(32px,9vw,49px);letter-spacing:-1.5px;margin:0;overflow-wrap:anywhere;max-width:100%}
 .ring-caption{color:#b6a477;font-size:11px;margin-top:1px}
@@ -260,7 +260,7 @@ const livedWeeks=Math.max(0,Math.floor(lived/7)),totalWeeks=Math.round(horizon*5
 $("lived").textContent=formatNumber(lived);
 $("remaining").textContent=formatNumber(remaining);
 $("yearsLived").textContent=(lived/365.2425).toFixed(1).replace(".",",");
-const ring=$("progressRing");const circumference=2*Math.PI*92;ring.style.strokeDasharray=String(circumference);ring.style.strokeDashoffset=String(circumference*(1-progress/100));$("ringPercent").textContent=progress.toFixed(1).replace(".",",")+"%";
+const ring=$("progressRing");const circumference=2*Math.PI*92;ring.style.strokeDasharray=String(circumference);ring.style.strokeDashoffset=String(circumference*(1-progress/100));const ringColor=progress<50?"#22c55e":progress<75?"#f6c84c":progress<90?"#ff8b32":"#ef4444";ring.style.stroke=ringColor;ring.style.filter="drop-shadow(0 0 7px "+ringColor+"70)";$("ringPercent").style.color=ringColor;$("ringPercent").textContent=progress.toFixed(1).replace(".",",")+"%";
 $("bar").style.width=progress+"%";
 $("progressText").textContent=progress.toFixed(1).replace(".",",")+"% de cet horizon théorique écoulé.";
 $("weekCount").textContent=formatNumber(totalWeeks)+" semaines";
