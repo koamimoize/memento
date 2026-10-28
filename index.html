@@ -90,6 +90,7 @@ body.popup-open{overflow:hidden}
 </section>
 <section class="card progress-card">
 <div class="label">JOURS ÉCOULÉS DEPUIS TA NAISSANCE</div>
+<div id="livedSummary" style="font-size:clamp(30px,8vw,44px);font-weight:850;letter-spacing:-1px;color:#fff5d8;text-align:center;margin:8px 0 0;font-variant-numeric:tabular-nums">— jours</div>
 <div class="progress-ring-wrap">
   <svg class="progress-ring" viewBox="0 0 220 220" role="img" aria-label="Pourcentage de l’horizon de vie théorique écoulé">
     <circle class="progress-ring-track" cx="110" cy="110" r="92"></circle>
@@ -258,6 +259,7 @@ const lived=Math.max(0,Math.floor(dayNumber(now)-dayNumber(birth)));
 const total=Math.round(horizon*365.2425),remaining=Math.max(0,total-lived),progress=Math.min(100,lived/total*100);
 const livedWeeks=Math.max(0,Math.floor(lived/7)),totalWeeks=Math.round(horizon*52.1775);
 $("lived").textContent=formatNumber(lived);
+$("livedSummary").textContent=formatNumber(lived)+" jours";
 $("remaining").textContent=formatNumber(remaining);
 $("yearsLived").textContent=(lived/365.2425).toFixed(1).replace(".",",");
 const ring=$("progressRing");const circumference=2*Math.PI*92;ring.style.strokeDasharray=String(circumference);ring.style.strokeDashoffset=String(circumference*(1-progress/100));const ringColor=progress<50?"#22c55e":progress<75?"#f6c84c":progress<90?"#ff8b32":"#ef4444";ring.style.stroke=ringColor;ring.style.filter="drop-shadow(0 0 7px "+ringColor+"70)";$("ringPercent").style.color=ringColor;$("ringPercent").textContent=progress.toFixed(1).replace(".",",")+"%";
