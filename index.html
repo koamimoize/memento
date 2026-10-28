@@ -23,6 +23,17 @@ h1{font-size:clamp(42px,10vw,76px);line-height:.98;letter-spacing:-3px;margin:14
 .label{color:var(--muted);font-size:12px;line-height:1.6}
 .number{font-size:clamp(42px,12vw,68px);font-weight:780;letter-spacing:-2px;margin:8px 0}
 #livedSeconds{font-size:clamp(34px,9vw,54px);font-variant-numeric:tabular-nums;overflow-wrap:anywhere}#livedClock{font-variant-numeric:tabular-nums}
+.progress-ring-wrap{position:relative;width:min(100%,290px);aspect-ratio:1;margin:18px auto 12px;display:grid;place-items:center}
+.progress-ring{width:100%;height:100%;transform:rotate(-90deg);overflow:visible}
+.progress-ring-track,.progress-ring-value{fill:none;stroke-width:11}
+.progress-ring-track{stroke:#30230e}
+.progress-ring-value{stroke:url(#ringGradient);stroke:#f6c84c;stroke-linecap:round;stroke-dasharray:578.05;stroke-dashoffset:578.05;filter:drop-shadow(0 0 6px rgba(246,200,76,.45));transition:stroke-dashoffset .9s ease}
+.progress-ring-center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:24px}
+.progress-ring-center .number{font-size:clamp(32px,9vw,49px);letter-spacing:-1.5px;margin:0;overflow-wrap:anywhere;max-width:100%}
+.ring-caption{color:#b6a477;font-size:11px;margin-top:1px}
+.ring-percent{font-size:24px;font-weight:800;color:#ff8b32;margin-top:9px;font-variant-numeric:tabular-nums}
+.ring-foot{text-align:center;max-width:320px;margin:0 auto 3px}
+@media(prefers-reduced-motion:reduce){.progress-ring-value{transition:none}}
 .number span{color:var(--cyan)}
 .progress{height:5px;border-radius:10px;background:#30230e;overflow:hidden;margin:18px 0 9px}
 #bar{height:100%;width:0;background:linear-gradient(90deg,var(--orange),var(--cyan));box-shadow:0 0 18px #f6c84c80;transition:width .8s}
@@ -77,11 +88,20 @@ body.popup-open{overflow:hidden}
 <div id="liveNowClock" style="font-size:clamp(42px,13vw,76px);font-weight:850;letter-spacing:2px;color:#F6C84C;font-variant-numeric:tabular-nums;line-height:1.15;margin:12px 0">00:00:00</div>
 <div id="liveNowDate" class="label">—</div>
 </section>
-<section class="card">
+<section class="card progress-card">
 <div class="label">JOURS ÉCOULÉS DEPUIS TA NAISSANCE</div>
-<div class="number" id="lived">—</div>
-<div class="progress"><div id="bar"></div></div>
-<div class="label" id="progressText">Ton parcours commence ici.</div>
+<div class="progress-ring-wrap">
+  <svg class="progress-ring" viewBox="0 0 220 220" role="img" aria-label="Pourcentage de l’horizon de vie théorique écoulé">
+    <circle class="progress-ring-track" cx="110" cy="110" r="92"></circle>
+    <circle class="progress-ring-value" id="progressRing" cx="110" cy="110" r="92"></circle>
+  </svg>
+  <div class="progress-ring-center">
+    <div class="number" id="lived">—</div>
+    <div class="ring-caption">jours écoulés</div>
+    <div class="ring-percent" id="ringPercent">—%</div>
+  </div>
+</div>
+<div class="label ring-foot" id="progressText">Ton parcours commence ici.</div>
 </section>
 <section class="card" id="liveClockCard">
 <div class="eyebrow">Chaque seconde compte</div>
@@ -240,6 +260,7 @@ const livedWeeks=Math.max(0,Math.floor(lived/7)),totalWeeks=Math.round(horizon*5
 $("lived").textContent=formatNumber(lived);
 $("remaining").textContent=formatNumber(remaining);
 $("yearsLived").textContent=(lived/365.2425).toFixed(1).replace(".",",");
+const ring=$("progressRing");const circumference=2*Math.PI*92;ring.style.strokeDasharray=String(circumference);ring.style.strokeDashoffset=String(circumference*(1-progress/100));$("ringPercent").textContent=progress.toFixed(1).replace(".",",")+"%";
 $("bar").style.width=progress+"%";
 $("progressText").textContent=progress.toFixed(1).replace(".",",")+"% de cet horizon théorique écoulé.";
 $("weekCount").textContent=formatNumber(totalWeeks)+" semaines";
