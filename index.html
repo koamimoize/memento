@@ -61,6 +61,12 @@ button:active{transform:scale(.99)}
 <h1>Le temps<br>ne t’attend pas.</h1>
 <p>Ta vie n’est pas infinie. Regarde le temps qui passe, puis choisis ce que tu vas en faire.</p>
 </section>
+<section class="card" id="liveNowCard">
+<div class="eyebrow">Le temps passe maintenant</div>
+<div class="label">HEURE ACTUELLE · MISE À JOUR CHAQUE SECONDE</div>
+<div id="liveNowClock" style="font-size:clamp(42px,13vw,76px);font-weight:850;letter-spacing:2px;color:#F6C84C;font-variant-numeric:tabular-nums;line-height:1.15;margin:12px 0">00:00:00</div>
+<div id="liveNowDate" class="label">—</div>
+</section>
 <section class="card">
 <div class="label">JOURS ÉCOULÉS DEPUIS TA NAISSANCE</div>
 <div class="number" id="lived">—</div>
@@ -140,6 +146,11 @@ let gridState={weeksLived:0,totalWeeks:80*52.1775,horizon:80};
 let canvas=$("lifeGrid"),ctx=canvas.getContext("2d"),raf=0,lastFrame=0,particles=[];
 function dayNumber(date){return Date.UTC(date.getFullYear(),date.getMonth(),date.getDate())/86400000}
 function formatNumber(n){return Math.max(0,Math.floor(n)).toLocaleString("fr-FR")}
+function updateLiveClock(){
+const now=new Date();
+$("liveNowClock").textContent=[now.getHours(),now.getMinutes(),now.getSeconds()].map(n=>String(n).padStart(2,"0")).join(":");
+$("liveNowDate").textContent=now.toLocaleDateString("fr-FR",{weekday:"long",day:"numeric",month:"long",year:"numeric"});
+}
 function updateLiveTime(){
 const value=$("birth").value;
 if(!value){$("livedSeconds").textContent="—";$("livedClock").textContent="Renseigne ta date de naissance";return}
@@ -211,6 +222,8 @@ $("save").addEventListener("click",render);
 if(window.ResizeObserver)new ResizeObserver(()=>drawGrid(performance.now())).observe(canvas);
 else window.addEventListener("resize",()=>drawGrid(performance.now()));
 startAnimation();
+updateLiveClock();
+setInterval(updateLiveClock,250);
 updateLiveTime();
 setInterval(updateLiveTime,1000);
 $("birth").addEventListener("input",updateLiveTime);
