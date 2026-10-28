@@ -3,50 +3,50 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#070b14">
+<meta name="theme-color" content="#070604">
 <meta name="description" content="Memento — visualise le temps, choisis ce qui compte.">
 <title>Memento — Souviens-toi de vivre</title>
 <style>
-:root{color-scheme:dark;--bg:#070b14;--panel:#0d1422;--text:#f2f6ff;--muted:#8998b2;--line:#202c43;--cyan:#66f3ff;--blue:#6e8bff;--violet:#bd7bff}
+:root{color-scheme:dark;--bg:#070604;--panel:#151006;--text:#fff5d8;--muted:#b6a477;--line:#3a2b10;--cyan:#f6c84c;--blue:#d99a24;--violet:#ff8b32}
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
-body{margin:0;background:radial-gradient(ellipse at 50% -15%,#142547 0%,var(--bg) 54%);color:var(--text);font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;min-height:100vh}
+body{margin:0;background:radial-gradient(ellipse at 50% -15%,#382306 0%,var(--bg) 58%);color:var(--text);font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;min-height:100vh}
 main{width:min(860px,100%);margin:auto;padding:25px 18px 48px}
-header{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #253149;padding:10px 0 17px}
+header{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #44300f;padding:10px 0 17px}
 .brand{font-weight:850;letter-spacing:4px;font-size:13px}
 .edition{font-size:10px;letter-spacing:1.5px;color:var(--muted)}
 .intro{padding:42px 0 22px}
 .eyebrow{color:var(--cyan);font-size:11px;letter-spacing:2.3px;text-transform:uppercase}
 h1{font-size:clamp(42px,10vw,76px);line-height:.98;letter-spacing:-3px;margin:14px 0}
-.intro p{color:#aab7cd;line-height:1.7;max-width:560px;font-size:15px}
-.card{background:linear-gradient(145deg,rgba(16,26,45,.95),rgba(9,15,27,.96));border:1px solid #25334d;border-radius:20px;padding:21px;margin:15px 0;box-shadow:0 16px 48px rgba(0,0,0,.16)}
+.intro p{color:#d5c18e;line-height:1.7;max-width:560px;font-size:15px}
+.card{background:linear-gradient(145deg,rgba(28,20,7,.97),rgba(10,8,3,.98));border:1px solid #4b3611;border-radius:20px;padding:21px;margin:15px 0;box-shadow:0 16px 48px rgba(0,0,0,.16)}
 .label{color:var(--muted);font-size:12px;line-height:1.6}
 .number{font-size:clamp(42px,12vw,68px);font-weight:780;letter-spacing:-2px;margin:8px 0}
 .number span{color:var(--cyan)}
-.progress{height:5px;border-radius:10px;background:#1e2a40;overflow:hidden;margin:18px 0 9px}
-#bar{height:100%;width:0;background:linear-gradient(90deg,var(--blue),var(--cyan));box-shadow:0 0 18px #66f3ff80;transition:width .8s}
+.progress{height:5px;border-radius:10px;background:#30230e;overflow:hidden;margin:18px 0 9px}
+#bar{height:100%;width:0;background:linear-gradient(90deg,var(--orange),var(--cyan));box-shadow:0 0 18px #f6c84c80;transition:width .8s}
 .stats{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.stat{padding:16px;border:1px solid #202d43;background:#0c1320;border-radius:15px;min-width:0}
+.stat{padding:16px;border:1px solid #3d2c10;background:#100c05;border-radius:15px;min-width:0}
 .stat strong{display:block;font-size:clamp(20px,5vw,28px);margin-top:7px;overflow-wrap:anywhere}
 .weeks-card{padding:19px 14px 15px;overflow:hidden}
 .weeks-top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin:10px 2px 14px}
 .weeks-top strong{font-size:14px}
-.pill{border:1px solid #28425b;border-radius:999px;padding:5px 9px;color:var(--cyan);font-size:10px;white-space:nowrap}
+.pill{border:1px solid #634817;border-radius:999px;padding:5px 9px;color:var(--cyan);font-size:10px;white-space:nowrap}
 #lifeGrid{display:block;width:100%;height:auto;aspect-ratio:1.28/1;touch-action:pan-y}
 .legend{display:flex;gap:14px;flex-wrap:wrap;margin:12px 2px 0;color:var(--muted);font-size:10px}
 .legend span{display:inline-flex;align-items:center;gap:6px}
 .dot{width:8px;height:8px;border-radius:2px;display:inline-block}
-.dot-lived{background:var(--cyan);box-shadow:0 0 8px #66f3ff8a}
-.dot-future{border:1px solid #42516d;background:#151e30}
-.dot-now{background:var(--violet);box-shadow:0 0 8px #bd7bff}
-.grid-note{margin:12px 2px 0;color:#8392ad;font-size:11px;line-height:1.6}
+.dot-lived{background:var(--cyan);box-shadow:0 0 8px #f6c84c8a}
+.dot-future{border:1px solid #71571f;background:#171006}
+.dot-now{background:var(--violet);box-shadow:0 0 8px #ff8b32}
+.grid-note{margin:12px 2px 0;color:#b6a477;font-size:11px;line-height:1.6}
 label{display:block;font-size:12px;margin:16px 0 7px;color:#c3cde0}
-input{width:100%;background:#070c16;color:var(--text);border:1px solid #34435e;border-radius:11px;padding:13px;font:inherit;min-height:46px}
+input{width:100%;background:#090703;color:var(--text);border:1px solid #6a4b17;border-radius:11px;padding:13px;font:inherit;min-height:46px}
 input:focus-visible,button:focus-visible{outline:2px solid var(--cyan);outline-offset:3px}
-button{width:100%;border:0;border-radius:11px;padding:14px;background:linear-gradient(100deg,var(--cyan),#9db9ff);color:#07101b;font-weight:800;font-size:14px;margin-top:19px;cursor:pointer}
+button{width:100%;border:0;border-radius:11px;padding:14px;background:linear-gradient(100deg,var(--cyan),var(--orange));color:#0c0802;font-weight:800;font-size:14px;margin-top:19px;cursor:pointer}
 button:active{transform:scale(.99)}
 .quote{font-size:20px;line-height:1.5;margin-bottom:12px}
-.footer{color:#65738c;font-size:10px;text-align:center;margin-top:30px;letter-spacing:.5px}
+.footer{color:#9a824f;font-size:10px;text-align:center;margin-top:30px;letter-spacing:.5px}
 @media(min-width:650px){main{padding:34px 26px 56px}.card{padding:25px}.weeks-card{padding:23px}.intro{padding-top:54px}}
 @media(max-width:390px){main{padding-left:13px;padding-right:13px}.edition{font-size:9px;letter-spacing:.8px}.card{padding:17px}.weeks-card{padding:15px 10px}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
@@ -122,18 +122,18 @@ for(let i=0;i<Math.ceil(gridState.totalWeeks);i++){
 const x=ox+(i%cols)*(cell+gapX),y=oy+Math.floor(i/cols)*(cell+gapY);
 const rr=Math.min(1.5,cell*.25);
 if(i<gridState.weeksLived){
-ctx.fillStyle=i===gridState.weeksLived-1?"#bd7bff":"#66eaf5";
-ctx.shadowColor=i===gridState.weeksLived-1?"#bd7bff":"#42eaf5";
+ctx.fillStyle=i===gridState.weeksLived-1?"#ff8b32":"#f6c84c";
+ctx.shadowColor=i===gridState.weeksLived-1?"#ff8b32":"#ffad35";
 ctx.shadowBlur=i===gridState.weeksLived-1?7:2.2;
 ctx.beginPath();ctx.roundRect(x,y,cell,cell,rr);ctx.fill();
 }else{
-ctx.shadowBlur=0;ctx.fillStyle="#111c2d";ctx.strokeStyle="#263751";ctx.lineWidth=.55;
+ctx.shadowBlur=0;ctx.fillStyle="#1c1306";ctx.strokeStyle="#4c3712";ctx.lineWidth=.55;
 ctx.beginPath();ctx.roundRect(x,y,cell,cell,rr);ctx.fill();ctx.stroke();
 }
 }
 ctx.shadowBlur=0;
 if(!reduced){
-for(const p of particles){p.y-=p.v;if(p.y<0){p.y=h;p.x=Math.random()*w}const alpha=.15+.28*(.5+.5*Math.sin(time/900+p.phase));ctx.globalAlpha=alpha;ctx.fillStyle="#8abaff";ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fill()}
+for(const p of particles){p.y-=p.v;if(p.y<0){p.y=h;p.x=Math.random()*w}const alpha=.15+.28*(.5+.5*Math.sin(time/900+p.phase));ctx.globalAlpha=alpha;ctx.fillStyle="#ffcf70";ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fill()}
 ctx.globalAlpha=1;
 }
 }
