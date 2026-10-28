@@ -85,8 +85,8 @@ button:active{transform:scale(.99)}
 <p class="label">Cet âge est une hypothèse personnelle, pas une prédiction de ton espérance de vie.</p>
 </section>
 <section class="card">
-<div class="eyebrow">Ta mission du jour</div><p class="quote" id="quote"></p>
-<div class="label">Choisis une action concrète. 25 minutes sans distraction, puis avance.</div>
+<div class="eyebrow">Une parole. Un acte.</div><p class="quote" id="quote"></p>
+<div class="label">Ne te contente pas de lire ces mots. Prouve-les par un acte aujourd’hui.</div>
 </section>
 <div class="footer">MEMENTO · LE TEMPS EST TA RESSOURCE LA PLUS PRÉCIEUSE</div>
 </main>
@@ -94,22 +94,38 @@ button:active{transform:scale(.99)}
 (function(){
 const $=id=>document.getElementById(id);
 const messages=[
-"Tu construis une carrière en mécanique et en industrie. Aujourd’hui, transforme une notion étudiée en un résultat concret : un exercice, un dessin CAO ou une note technique.",
-"Ton stage ITS PRIME chez Baker Hughes approche. Prépare-toi comme quelqu’un qu’on aura envie de garder : révise un sujet technique et écris ce que tu as compris avec tes propres mots.",
-"Pas besoin d’être déjà expert. Pour progresser, choisis un seul sujet — matériaux, qualité, métrologie, CNC ou maintenance — et travaille dessus pendant 25 minutes sans distraction.",
-"Ton projet SmartMaintenance ne doit pas rester une idée. Aujourd’hui, fais avancer une petite pièce : une requête SQL, une table propre, quelques données ou un graphique exploitable.",
-"Lomé Industrial Solutions doit résoudre un vrai problème industriel, pas seulement avoir un beau nom. Contacte une entreprise ou prépare trois questions pour découvrir un problème qu’elle paierait pour résoudre.",
-"Tu veux créer un pont entre l’Italie et le Togo. Aujourd’hui, fais un pas vérifiable : identifie un contact pertinent, écris un message précis ou documente une opportunité industrielle.",
-"Un portfolio concret vaut mieux que dix projets commencés. Termine une petite amélioration de ton projet technique et garde une preuve : capture d’écran, fichier, schéma ou explication.",
-"Memento te rappelle que ton temps est limité. Ne passe pas toute ta journée à perfectionner l’outil qui doit te motiver : utilise-le, puis attaque la tâche importante.",
-"Tu n’as pas besoin de maîtriser toute l’ingénierie aujourd’hui. Tu dois devenir un peu plus compétent qu’hier. Quel concept peux-tu expliquer sans regarder tes notes ?",
-"Le marché ne récompense pas seulement les idées, mais les problèmes résolus. Aujourd’hui, produis quelque chose qu’une autre personne peut voir, tester, corriger ou utiliser.",
-"Si tu as peu de temps et peu d’argent, protège ton attention. Une session de 30 minutes concentrée sur une compétence utile vaut mieux qu’une heure à faire défiler des contenus.",
-"Ne confonds pas préparer et avancer. Après cette lecture ou cette vidéo, crée immédiatement une preuve d’apprentissage : un calcul, un mini-exercice ou un résumé de cinq lignes.",
-"Ton objectif n’est pas de paraître ingénieur, mais de développer un vrai jugement technique. Note ce que tu sais, ce que tu ignores et la prochaine expérience qui te permettra de vérifier.",
-"Pour trouver un premier client au Togo, commence par écouter. Aujourd’hui, formule une offre simple autour d’un problème précis et demande à une personne du terrain si ce problème existe vraiment.",
-"Tu construis ton avenir par accumulation : compétences, projets terminés, relations fiables et décisions disciplinées. Ajoute aujourd’hui une preuve concrète à cet ensemble.",
-"Le jour parfait n’arrivera pas. Choisis une tâche importante, mets ton téléphone de côté et commence par la première étape pendant 25 minutes."
+"« L’homme se révèle dans ce qu’il fait lorsqu’aucun regard ne le surveille. » — Aujourd’hui, travaille même si personne ne t’applaudit.",
+"« Tu peux souffrir de l’effort qui te construit, ou de l’amertume de ne pas avoir essayé. Choisis ta souffrance. » — Fais les 25 prochaines minutes.",
+"« Ton potentiel ne te doit rien. C’est à toi de lui donner une forme. » — Termine aujourd’hui une tâche que tu repousses.",
+"« Ne demande pas une vie plus facile. Deviens quelqu’un capable d’affronter une vie difficile. » — Attaque le problème que tu évites.",
+"« Le temps ne transforme pas automatiquement un homme : il révèle ce qu’il répète. » — Répète aujourd’hui un geste qui te rend meilleur.",
+"« Tu veux changer ton destin ? Commence par cesser de négocier avec tes excuses. » — Ouvre ton cours, ton projet ou ton carnet maintenant.",
+"« Une ambition sans travail devient une histoire que l’on se raconte pour se consoler. » — Produis une preuve : un exercice, un schéma ou une ligne de code.",
+"« N’attends pas de te sentir prêt. La confiance est souvent la récompense de l’action, pas son préalable. » — Commence imparfaitement.",
+"« La liberté coûte cher : elle exige que tu prennes la responsabilité de tes choix. » — Choisis ce qui mérite ton attention et assume-le.",
+"« Si tu veux bâtir quelque chose de grand, apprends à respecter les petites tâches que personne ne remarque. » — Fais proprement la prochaine étape.",
+"« Tu ne manques peut-être pas de temps ; tu laisses peut-être trop de choses décider à ta place. » — Éloigne ton téléphone pendant 25 minutes.",
+"« La connaissance que tu ne mets jamais à l’épreuve devient une décoration de l’esprit. » — Applique aujourd’hui une notion de mécanique, de qualité ou de programmation.",
+"« Ne cherche pas à paraître compétent. Deviens utile. » — Résous un problème réel, même petit, et documente ton résultat.",
+"« Ton avenir ne sera pas construit par l’intensité de tes rêves, mais par la fidélité de tes actes. » — Fais aujourd’hui ce que tu avais promis de faire.",
+"« La peur grandit dans l’imagination ; le courage se construit au contact du réel. » — Contacte une entreprise, pose une question ou montre ton travail.",
+"« Tu peux recommencer ta journée à cet instant précis. Mais tu ne peux pas récupérer l’heure que tu viens de perdre. » — Reviens à l’essentiel.",
+"« Deviens assez humble pour apprendre et assez exigeant pour ne pas rester au même niveau. » — Étudie un sujet, puis explique-le sans tes notes.",
+"« Ne confonds pas agitation et progrès : une seule chose terminée vaut mieux que dix choses annoncées. » — Termine une petite partie de SmartMaintenance.",
+"« Tu veux créer un pont entre l’Italie et le Togo ? Pose aujourd’hui une pierre réelle, pas seulement une intention. » — Fais un pas concret pour Lomé Industrial Solutions.",
+"« Le travail silencieux finit par parler avec une voix que les promesses n’auront jamais. » — Ajoute une preuve de compétence à ton portfolio.",
+"« La discipline, c’est te respecter assez pour ne pas abandonner ton avenir à ton humeur du jour. » — Commence même si tu n’en as pas envie.",
+"« Tu n’as pas besoin d’être exceptionnel aujourd’hui. Tu dois simplement refuser de rester immobile par confort. » — Avance d’un pas mesurable.",
+"« L’homme qui se connaît reconnaît ses faiblesses sans en faire son identité. » — Note ce que tu dois améliorer et la prochaine action pour le faire.",
+"« Une vie solide se construit sur des choix répétés, pas sur un moment de motivation. » — Garde une promesse que tu t’es faite.",
+"« Ton premier client ne viendra pas admirer ton ambition. Il viendra chercher une solution à son problème. » — Écoute une entreprise avant de vendre une idée.",
+"« N’attends pas que les circonstances te donnent la permission de commencer. Fais avec les moyens présents. » — Construis quelque chose avec ce que tu as déjà.",
+"« Chaque compétence acquise élargit le territoire sur lequel tu peux agir librement. » — Investis 30 minutes dans une compétence utile.",
+"« Si tu veux une autre vie, il faudra accepter des journées que ton ancienne version aurait évitées. » — Fais le travail difficile en premier.",
+"« Ne laisse pas le besoin d’impressionner les autres voler le temps nécessaire pour devenir réellement bon. » — Apprends, pratique, vérifie.",
+"« Le regret est parfois le prix d’une décision jamais prise. » — Envoie ce message utile, commence ce projet ou pose cette question.",
+"« La grandeur n’est pas un sentiment. C’est une accumulation de responsabilités assumées. » — Prends en charge la prochaine étape.",
+"« Quand tu oublies pourquoi tu travailles, rappelle-toi ce que tu veux rendre possible pour toi et ceux qui comptent sur toi. » — Fais un pas aujourd’hui."
 ];
 const reduced=window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 let gridState={weeksLived:0,totalWeeks:80*52.1775,horizon:80};
