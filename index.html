@@ -266,7 +266,7 @@ const ring=$("progressRing");const circumference=2*Math.PI*92;ring.style.strokeD
 $("bar").style.width=progress+"%";
 $("progressText").textContent=progress.toFixed(1).replace(".",",")+"% de cet horizon théorique écoulé.";
 $("weekCount").textContent=formatNumber(totalWeeks)+" semaines";
-$("gridNote").textContent=formatNumber(livedWeeks)+" semaines écoulées sur "+formatNumber(totalWeeks)+" dans ton horizon de "+horizon+" ans.";
+$("gridNote").textContent=formatNumber(lived)+" jours écoulés · "+formatNumber(livedWeeks)+" semaines écoulées sur "+formatNumber(totalWeeks)+" dans ton horizon de "+horizon+" ans.";
 gridState={weeksLived:livedWeeks,totalWeeks:totalWeeks,horizon:horizon};
 
 try{localStorage.setItem("mementoBirth",birthValue);localStorage.setItem("mementoHorizon",String(horizon))}catch(e){}
