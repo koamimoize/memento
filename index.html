@@ -118,6 +118,10 @@ body.popup-open{overflow:hidden}
 <section class="card weeks-card">
 <div class="eyebrow">Ta vie en perspective</div>
 <div class="weeks-top"><strong>Chaque carré = une semaine</strong><span class="pill" id="weekCount">4 174 semaines</span></div>
+<div id="elapsedDaysWeeks" style="margin:12px 0 14px;padding:14px 16px;border:1px solid #22c55e66;border-radius:14px;background:#0b160d;text-align:center">
+  <div style="font-size:11px;letter-spacing:1.5px;color:#86efac;text-transform:uppercase">Jours déjà écoulés depuis ta naissance</div>
+  <div id="elapsedDaysWeeksValue" style="font-size:clamp(28px,8vw,42px);font-weight:900;color:#fff5d8;margin-top:4px;font-variant-numeric:tabular-nums">— jours</div>
+</div>
 <canvas id="lifeGrid" role="img" aria-label="Grille de semaines de vie. Les cases lumineuses représentent les semaines écoulées."></canvas>
 <div class="legend"><span><i class="dot dot-lived"></i>Semaines écoulées</span><span><i class="dot dot-now"></i>Cette semaine</span><span><i class="dot dot-future"></i>Semaines à venir</span></div>
 <p class="grid-note" id="gridNote">Chaque carré est une semaine de ton horizon personnel — pas une prédiction de la durée réelle de ta vie.</p>
@@ -260,13 +264,14 @@ const total=Math.round(horizon*365.2425),remaining=Math.max(0,total-lived),progr
 const livedWeeks=Math.max(0,Math.floor(lived/7)),totalWeeks=Math.round(horizon*52.1775);
 $("lived").textContent=formatNumber(lived);
 $("livedSummary").textContent=formatNumber(lived)+" jours";
+$("elapsedDaysWeeksValue").textContent=formatNumber(lived)+" jours";
 $("remaining").textContent=formatNumber(remaining);
 $("yearsLived").textContent=(lived/365.2425).toFixed(1).replace(".",",");
 const ring=$("progressRing");const circumference=2*Math.PI*92;ring.style.strokeDasharray=String(circumference);ring.style.strokeDashoffset=String(circumference*(1-progress/100));const ringColor=progress<50?"#22c55e":progress<75?"#f6c84c":progress<90?"#ff8b32":"#ef4444";ring.style.stroke=ringColor;ring.style.filter="drop-shadow(0 0 7px "+ringColor+"70)";$("ringPercent").style.color=ringColor;$("ringPercent").textContent=progress.toFixed(1).replace(".",",")+"%";
 $("bar").style.width=progress+"%";
 $("progressText").textContent=progress.toFixed(1).replace(".",",")+"% de cet horizon théorique écoulé.";
 $("weekCount").textContent=formatNumber(totalWeeks)+" semaines";
-$("gridNote").textContent=formatNumber(lived)+" jours écoulés · "+formatNumber(livedWeeks)+" semaines écoulées sur "+formatNumber(totalWeeks)+" dans ton horizon de "+horizon+" ans.";
+$("gridNote").textContent="Chaque carré est une semaine de ton horizon personnel — pas une prédiction de la durée réelle de ta vie. "+formatNumber(livedWeeks)+" semaines déjà écoulées sur "+formatNumber(totalWeeks)+".";
 gridState={weeksLived:livedWeeks,totalWeeks:totalWeeks,horizon:horizon};
 
 try{localStorage.setItem("mementoBirth",birthValue);localStorage.setItem("mementoHorizon",String(horizon))}catch(e){}
