@@ -99,8 +99,8 @@ button:active{transform:scale(.99)}
 <p class="label">Cet âge est une hypothèse personnelle, pas une prédiction de ton espérance de vie.</p>
 </section>
 <section class="card">
-<div class="eyebrow">Une parole. Un acte.</div><p class="quote" id="quote"></p>
-<div class="label">Ne te contente pas de lire ces mots. Prouve-les par un acte aujourd’hui.</div>
+<div class="eyebrow">Une parole. Un acte. · Renouvellement toutes les 15 minutes</div><p class="quote" id="quote"></p>
+<div class="label">Ces paroles sont originales, inspirées par la réflexion existentielle et la discipline — pas des citations historiques attribuées à Dostoïevski. Ne te contente pas de les lire : prouve-les par un acte aujourd’hui.</div>
 </section>
 <div class="footer">MEMENTO · LE TEMPS EST TA RESSOURCE LA PLUS PRÉCIEUSE</div>
 </main>
@@ -140,6 +140,25 @@ const messages=[
 "« Le regret est parfois le prix d’une décision jamais prise. » — Envoie ce message utile, commence ce projet ou pose cette question.",
 "« La grandeur n’est pas un sentiment. C’est une accumulation de responsabilités assumées. » — Prends en charge la prochaine étape.",
 "« Quand tu oublies pourquoi tu travailles, rappelle-toi ce que tu veux rendre possible pour toi et ceux qui comptent sur toi. » — Fais un pas aujourd’hui."
+,
+"« Ton diplôme ne sera pas le résultat de tes intentions, mais des problèmes que tu apprendras à résoudre. » — Transforme une notion de mécanique en un exercice concret.",
+"« À Florence, tu apprends aujourd’hui ce que tu pourras un jour construire à Lomé. » — Note une compétence transférable entre l’Italie et le Togo.",
+"« Une expérience chez Baker Hughes n’est pas un trophée à afficher : c’est une occasion d’observer, d’apprendre et de devenir fiable. » — Prépare une question technique pertinente.",
+"« Ne prétends pas maîtriser ce que tu es encore en train d’apprendre. La précision est plus respectable que la posture. » — Documente honnêtement ce que tu sais faire et ce que tu dois apprendre.",
+"« Un portfolio convaincant est un cimetière de problèmes résolus, pas un musée de belles intentions. » — Ajoute une capture, un schéma ou une explication à SmartMaintenance.",
+"« L’industrie ne paie pas les idées parce qu’elles sont séduisantes ; elle paie les améliorations qui comptent. » — Identifie une perte de temps, un défaut ou une panne qu’une entreprise veut réduire.",
+"« Le pont entre deux pays se construit d’abord avec une conversation tenue et une promesse respectée. » — Écris à un contact au Togo avec une question précise.",
+"« N’essaie pas de bâtir tout l’empire aujourd’hui. Trouve le premier problème assez réel pour qu’un client accepte d’en parler. » — Prépare une proposition simple pour Lomé Industrial Solutions.",
+"« Le code que tu comprends vaut davantage que le projet copié que tu ne sais pas expliquer. » — Relis une partie de ton application et explique-la avec tes propres mots.",
+"« La maîtrise est une patience qui a pris l’habitude de travailler. » — Fais 25 minutes de pratique sans téléphone ni distraction.",
+"« La foi n’annule pas l’effort ; elle peut lui donner une direction quand l’envie disparaît. » — Fais avec sérieux la prochaine petite chose qui dépend de toi.",
+"« Construis une vie dont les personnes que tu aimes pourront voir les preuves, pas seulement entendre les promesses. » — Tiens aujourd’hui un engagement concret.",
+"« Tu n’as pas besoin de te présenter comme un expert pour commencer à être utile. » — Pose une question, écoute un besoin et propose une petite étape réaliste.",
+"« Chaque heure peut devenir une brique ou du bruit. Le choix se fait souvent avant même que tu commences. » — Décide maintenant du résultat que tu veux produire dans les 25 prochaines minutes.",
+"« Le courage n’est pas de ne pas douter ; c’est de vérifier les faits et d’agir malgré l’inconfort. » — Envoie le message professionnel que tu repousses.",
+"« Ne mesure pas ta progression au nombre d’idées que tu collectionnes, mais au nombre de choses que tu peux montrer. » — Termine une petite démonstration de ton projet.",
+"« L’homme se transforme quand il cesse de se raconter qu’il commencera bientôt. » — Commence par cinq minutes, maintenant.",
+"« Ton avenir entre l’ingénierie, l’industrie et l’entrepreneuriat se construira à l’intersection du savoir et du terrain. » — Relie une notion étudiée à un problème industriel réel."
 ];
 const reduced=window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 let gridState={weeksLived:0,totalWeeks:80*52.1775,horizon:80};
@@ -208,7 +227,7 @@ $("progressText").textContent=progress.toFixed(1).replace(".",",")+"% de cet hor
 $("weekCount").textContent=formatNumber(totalWeeks)+" semaines";
 $("gridNote").textContent=formatNumber(livedWeeks)+" semaines écoulées sur "+formatNumber(totalWeeks)+" dans ton horizon de "+horizon+" ans.";
 gridState={weeksLived:livedWeeks,totalWeeks:totalWeeks,horizon:horizon};
-const day=Math.floor(dayNumber(now));$("quote").textContent=messages[((day%messages.length)+messages.length)%messages.length];
+
 try{localStorage.setItem("mementoBirth",birthValue);localStorage.setItem("mementoHorizon",String(horizon))}catch(e){}
 drawGrid(performance.now());
 }
@@ -217,7 +236,9 @@ const savedBirth=localStorage.getItem("mementoBirth"),savedHorizon=localStorage.
 if(savedBirth)$("birth").value=savedBirth;
 if(savedHorizon)$("horizon").value=savedHorizon;
 }catch(e){}
-const day=Math.floor(dayNumber(new Date()));$("quote").textContent=messages[((day%messages.length)+messages.length)%messages.length];
+function updateQuote(){const slot=Math.floor(Date.now()/(15*60*1000));$("quote").textContent=messages[((slot%messages.length)+messages.length)%messages.length];}
+updateQuote();
+setInterval(updateQuote,15000);
 $("save").addEventListener("click",render);
 if(window.ResizeObserver)new ResizeObserver(()=>drawGrid(performance.now())).observe(canvas);
 else window.addEventListener("resize",()=>drawGrid(performance.now()));
