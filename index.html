@@ -276,31 +276,38 @@ function startAnimation(){if(raf)cancelAnimationFrame(raf);if(reduced)drawGrid(0
 function updateRemainingCountdown(){
 const birthValue=$("birth").value;
 const horizon=Number($("horizon").value);
+const ids=["remainingDays","remainingHours","remainingMinutes","remainingSeconds"];
 if(!birthValue||!Number.isInteger(horizon)||horizon<1||horizon>120){
-["remainingDays","remainingHours","remainingMinutes","remainingSeconds"].forEach(id=>$(id).textContent="—");
-$("countdownTarget").textContent="Choisis ta date de naissance et ton âge cible pour lancer le compte à rebours.";
+ids.forEach(id=>$(id).textContent="—");
+$("countdownTarget").textContent="Renseigne ta date de naissance et ton âge cible pour démarrer le compte à rebours.";
 return;
 }
-const birth=new Date(birthValue+"T00:00:00"),now=new Date();
-if(Number.isNaN(birth.getTime())||birth>now){
-["remainingDays","remainingHours","remainingMinutes","remainingSeconds"].forEach(id=>$(id).textContent="—");
-$("countdownTarget").textContent="Entre une date de naissance valide située dans le passé.";
+const parts=birthValue.split("-").map(Number);
+if(parts.length!==3||parts.some(n=>!Number.isFinite(n))){
+ids.forEach(id=>$(id).textContent="—");
+$("countdownTarget").textContent="Entre une date de naissance valide.";
 return;
 }
-const targetYear=birth.getFullYear()+horizon;
-const target=new Date(targetYear,birth.getMonth(),birth.getDate(),0,0,0,0);
-if(target.getMonth()!==birth.getMonth())target.setDate(0);
-let ms=Math.max(0,target.getTime()-now.getTime());
+const [year,month,day]=parts;
+const birth=new Date(year,month-1,day,0,0,0,0);
+const now=new Date();
+if(Number.isNaN(birth.getTime())||birth.getTime()>now.getTime()){
+ids.forEach(id=>$(id).textContent="—");
+$("countdownTarget").textContent="La date de naissance doit être valide et dans le passé.";
+return;
+}
+// The target is the start of the chosen age, computed in local time.
+const target=new Date(year+horizon,month-1,day,0,0,0,0);
+if(target.getMonth()!==month-1)target.setDate(0);
+const ms=Math.max(0,target.getTime()-Date.now());
 const totalSeconds=Math.floor(ms/1000);
-const days=Math.floor(totalSeconds/86400);
-const hours=Math.floor((totalSeconds%86400)/3600);
-const minutes=Math.floor((totalSeconds%3600)/60);
-const seconds=totalSeconds%60;
-$("remainingDays").textContent=formatNumber(days);
-$("remainingHours").textContent=String(hours).padStart(2,"0");
-$("remainingMinutes").textContent=String(minutes).padStart(2,"0");
-$("remainingSeconds").textContent=String(seconds).padStart(2,"0");
-$("countdownTarget").textContent="Projection jusqu’au "+target.toLocaleDateString("fr-FR",{day:"numeric",month:"long",year:"numeric"})+" — une hypothèse personnelle, pas une prédiction de la durée réelle de ta vie.";
+$("remainingDays").textContent=formatNumber(Math.floor(totalSeconds/86400));
+$("remainingHours").textContent=String(Math.floor(totalSeconds%86400/3600)).padStart(2,"0");
+$("remainingMinutes").textContent=String(Math.floor(totalSeconds%3600/60)).padStart(2,"0");
+$("remainingSeconds").textContent=String(totalSeconds%60).padStart(2,"0");
+$("countdownTarget").textContent=ms===0
+?"L’âge cible choisi est atteint. Tu peux modifier cet âge dans les paramètres."
+:"Projection jusqu’au "+target.toLocaleDateString("fr-FR",{day:"numeric",month:"long",year:"numeric"})+" — hypothèse personnelle, pas une prédiction de ta durée de vie.";
 $("remaining").textContent=formatNumber(Math.ceil(ms/86400000));
 }
 function render(){
