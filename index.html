@@ -366,5 +366,59 @@ $("horizon").addEventListener("input",updateRemainingCountdown);
 if($("birth").value)render();
 })();
 </script>
+
+<!-- Independent countdown script: keeps working even if another app script has an error. -->
+<script>
+(function () {
+  function initMementoCountdown() {
+    var birthInput = document.getElementById("birth");
+    var horizonInput = document.getElementById("horizon");
+    var dayEl = document.getElementById("remainingDays");
+    var hourEl = document.getElementById("remainingHours");
+    var minuteEl = document.getElementById("remainingMinutes");
+    var secondEl = document.getElementById("remainingSeconds");
+    var noteEl = document.getElementById("countdownTarget");
+    if (!birthInput || !horizonInput || !dayEl || !hourEl || !minuteEl || !secondEl) return;
+
+    function tick() {
+      var raw = birthInput.value;
+      var age = Number(horizonInput.value);
+      if (!raw || !Number.isInteger(age) || age < 1 || age > 120) {
+        dayEl.textContent = hourEl.textContent = minuteEl.textContent = secondEl.textContent = "—";
+        if (noteEl) noteEl.textContent = "Choisis ta date de naissance et un âge cible (de 1 à 120 ans), puis le compte à rebours démarrera.";
+        return;
+      }
+      var p = raw.split("-");
+      if (p.length !== 3) return;
+      var y = Number(p[0]), m = Number(p[1]), d = Number(p[2]);
+      var birth = new Date(y, m - 1, d);
+      var now = new Date();
+      if (!Number.isFinite(birth.getTime()) || birth > now || birth.getFullYear() !== y || birth.getMonth() !== m - 1 || birth.getDate() !== d) {
+        dayEl.textContent = hourEl.textContent = minuteEl.textContent = secondEl.textContent = "—";
+        if (noteEl) noteEl.textContent = "Vérifie la date de naissance : elle doit être valide et dans le passé.";
+        return;
+      }
+      var target = new Date(y + age, m - 1, d, 0, 0, 0, 0);
+      if (target.getMonth() !== m - 1) target.setDate(0);
+      var secondsLeft = Math.max(0, Math.floor((target.getTime() - Date.now()) / 1000));
+      dayEl.textContent = Math.floor(secondsLeft / 86400).toLocaleString("fr-FR");
+      hourEl.textContent = String(Math.floor((secondsLeft % 86400) / 3600)).padStart(2, "0");
+      minuteEl.textContent = String(Math.floor((secondsLeft % 3600) / 60)).padStart(2, "0");
+      secondEl.textContent = String(secondsLeft % 60).padStart(2, "0");
+      if (noteEl) noteEl.textContent = secondsLeft === 0
+        ? "L’âge cible choisi est atteint. Tu peux modifier cet âge dans les paramètres."
+        : "Projection jusqu’au " + target.toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" }) + " — hypothèse personnelle, pas une prédiction.";
+    }
+    birthInput.addEventListener("input", tick);
+    horizonInput.addEventListener("input", tick);
+    document.getElementById("save").addEventListener("click", tick);
+    tick();
+    window.setInterval(tick, 1000);
+  }
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", initMementoCountdown);
+  else initMementoCountdown();
+})();
+</script>
+
 </body>
 </html>
