@@ -23,6 +23,14 @@ h1{font-size:clamp(42px,10vw,76px);line-height:.98;letter-spacing:-3px;margin:14
 .label{color:var(--muted);font-size:12px;line-height:1.6}
 .number{font-size:clamp(42px,12vw,68px);font-weight:780;letter-spacing:-2px;margin:8px 0}
 #livedSeconds{font-size:clamp(34px,9vw,54px);font-variant-numeric:tabular-nums;overflow-wrap:anywhere}#livedClock{font-variant-numeric:tabular-nums}
+
+.countdown-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-top:16px}
+.countdown-unit{min-width:0;text-align:center;padding:14px 5px;background:#100c05;border:1px solid #5b4218;border-radius:13px}
+.countdown-value{display:block;font-size:clamp(22px,6.5vw,40px);font-weight:850;letter-spacing:-1.2px;color:#f6c84c;font-variant-numeric:tabular-nums;line-height:1.15;overflow-wrap:anywhere}
+.countdown-label{display:block;color:#b6a477;font-size:9px;letter-spacing:1px;margin-top:7px}
+.countdown-note{margin-top:14px;color:#b6a477;font-size:11px;line-height:1.6}
+@media(max-width:360px){.countdown-grid{gap:5px}.countdown-unit{padding:12px 2px}.countdown-label{font-size:8px;letter-spacing:.5px}}
+
 .progress-ring-wrap{position:relative;width:min(100%,290px);aspect-ratio:1;margin:18px auto 12px;display:grid;place-items:center}
 .progress-ring{width:100%;height:100%;transform:rotate(-90deg);overflow:visible}
 .progress-ring-track,.progress-ring-value{fill:none;stroke-width:11}
@@ -110,6 +118,17 @@ body.popup-open{overflow:hidden}
 <div class="number" id="livedSeconds">—</div>
 <div class="label">Le compteur avance en temps réel.</div>
 <div id="livedClock" style="font-size:clamp(18px,5vw,26px);font-weight:750;letter-spacing:2px;color:#ff8b32;margin-top:14px;font-variant-numeric:tabular-nums">— jours · —:—:—</div>
+</section>
+<section class="card" id="remainingCountdownCard">
+<div class="eyebrow">Le compte à rebours</div>
+<div class="label">TEMPS RESTANT JUSQU’À TON ÂGE CIBLE</div>
+<div class="countdown-grid" role="timer" aria-live="off" aria-label="Compte à rebours estimé en jours, heures, minutes et secondes">
+  <div class="countdown-unit"><span class="countdown-value" id="remainingDays">—</span><span class="countdown-label">JOURS</span></div>
+  <div class="countdown-unit"><span class="countdown-value" id="remainingHours">—</span><span class="countdown-label">HEURES</span></div>
+  <div class="countdown-unit"><span class="countdown-value" id="remainingMinutes">—</span><span class="countdown-label">MINUTES</span></div>
+  <div class="countdown-unit"><span class="countdown-value" id="remainingSeconds">—</span><span class="countdown-label">SECONDES</span></div>
+</div>
+<div class="countdown-note" id="countdownTarget">Choisis ta date de naissance et ton âge cible ci-dessous. Le compteur se met à jour chaque seconde.</div>
 </section>
 <section class="stats">
 <div class="stat"><div class="label">JOURS RESTANTS ESTIMÉS</div><strong id="remaining">—</strong></div>
@@ -254,6 +273,36 @@ ctx.globalAlpha=1;
 }
 function animate(t){if(t-lastFrame>40){drawGrid(t);lastFrame=t}if(!reduced)raf=requestAnimationFrame(animate)}
 function startAnimation(){if(raf)cancelAnimationFrame(raf);if(reduced)drawGrid(0);else raf=requestAnimationFrame(animate)}
+function updateRemainingCountdown(){
+const birthValue=$("birth").value;
+const horizon=Number($("horizon").value);
+if(!birthValue||!Number.isInteger(horizon)||horizon<1||horizon>120){
+["remainingDays","remainingHours","remainingMinutes","remainingSeconds"].forEach(id=>$(id).textContent="—");
+$("countdownTarget").textContent="Choisis ta date de naissance et ton âge cible pour lancer le compte à rebours.";
+return;
+}
+const birth=new Date(birthValue+"T00:00:00"),now=new Date();
+if(Number.isNaN(birth.getTime())||birth>now){
+["remainingDays","remainingHours","remainingMinutes","remainingSeconds"].forEach(id=>$(id).textContent="—");
+$("countdownTarget").textContent="Entre une date de naissance valide située dans le passé.";
+return;
+}
+const targetYear=birth.getFullYear()+horizon;
+const target=new Date(targetYear,birth.getMonth(),birth.getDate(),0,0,0,0);
+if(target.getMonth()!==birth.getMonth())target.setDate(0);
+let ms=Math.max(0,target.getTime()-now.getTime());
+const totalSeconds=Math.floor(ms/1000);
+const days=Math.floor(totalSeconds/86400);
+const hours=Math.floor((totalSeconds%86400)/3600);
+const minutes=Math.floor((totalSeconds%3600)/60);
+const seconds=totalSeconds%60;
+$("remainingDays").textContent=formatNumber(days);
+$("remainingHours").textContent=String(hours).padStart(2,"0");
+$("remainingMinutes").textContent=String(minutes).padStart(2,"0");
+$("remainingSeconds").textContent=String(seconds).padStart(2,"0");
+$("countdownTarget").textContent="Projection jusqu’au "+target.toLocaleDateString("fr-FR",{day:"numeric",month:"long",year:"numeric"})+" — une hypothèse personnelle, pas une prédiction de la durée réelle de ta vie.";
+$("remaining").textContent=formatNumber(Math.ceil(ms/86400000));
+}
 function render(){
 const birthValue=$("birth").value,horizon=Number($("horizon").value);
 if(!birthValue||!Number.isFinite(horizon)||horizon<1||horizon>120||!Number.isInteger(horizon)){alert("Entre une date de naissance valide et un âge entier compris entre 1 et 120 ans.");return}
@@ -276,6 +325,7 @@ gridState={weeksLived:livedWeeks,totalWeeks:totalWeeks,horizon:horizon};
 
 try{localStorage.setItem("mementoBirth",birthValue);localStorage.setItem("mementoHorizon",String(horizon))}catch(e){}
 drawGrid(performance.now());
+updateRemainingCountdown();
 }
 try{
 const savedBirth=localStorage.getItem("mementoBirth"),savedHorizon=localStorage.getItem("mementoHorizon");
@@ -302,7 +352,10 @@ updateLiveClock();
 setInterval(updateLiveClock,250);
 updateLiveTime();
 setInterval(updateLiveTime,1000);
-$("birth").addEventListener("input",updateLiveTime);
+updateRemainingCountdown();
+setInterval(updateRemainingCountdown,1000);
+$("birth").addEventListener("input",()=>{updateLiveTime();updateRemainingCountdown();});
+$("horizon").addEventListener("input",updateRemainingCountdown);
 if($("birth").value)render();
 })();
 </script>
